@@ -3,6 +3,13 @@ a script that automates the translation of a json using the deepl api
 
 ## Settings
 ---
+
+### Install dependencies
+```
+pip install -r requirements.txt
+```
+
+### Environment variables
 add an .env file and set the authentication token, like here:
 ```
 AUTH_KEY="your_token"
@@ -13,7 +20,8 @@ AUTH_KEY="your_token"
 
 ## Usage
 ---
-arguments:
+
+### Arguments
 ```
 file [languages] [directory]
 ```
@@ -21,3 +29,8 @@ file [languages] [directory]
 + **file** -> file to translate
 + **languages** -> languages to translate (eg: "en, es")
 + **directory** -> directory where the new translations will be saved
+
+### Example use
+```
+python transjson test.json "es, ja" ..\translations\
+```
