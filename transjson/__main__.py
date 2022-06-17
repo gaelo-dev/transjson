@@ -27,6 +27,8 @@ async def main():
             
             with open(f"{args.directory}/{lang}.json", "w") as f:
                 f.write(json.dumps(translation, indent=4))
+            
+            await asyncio.sleep(2.5)
 
                 
 asyncio.run(main())
