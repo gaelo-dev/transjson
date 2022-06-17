@@ -26,7 +26,7 @@ async def main():
                 translation[key] = await session.search_translation(lang, value)
             
             with open(f"{args.directory}/{lang}.json", "w") as f:
-                f.write(json.dumps(translation))
+                f.write(json.dumps(translation, indent=4))
 
                 
 asyncio.run(main())
