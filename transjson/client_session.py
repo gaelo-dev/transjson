@@ -11,7 +11,7 @@ class ClientSession(aiohttp.ClientSession):
         if isinstance(value, dict):
             translation = {}
             keys = [k for k in value.keys()]
-            values = self.search_translation(lang, [v for v in value.values()])
+            values = await self.search_translation(lang, [v for v in value.values()])
             
             for n, k in enumerate(keys):
                 translation[k] = values[n]
@@ -23,7 +23,7 @@ class ClientSession(aiohttp.ClientSession):
             url = f"/v2/translate?auth_key={env.auth_key}&target_lang={lang}"
             for v in value:
                 if not isinstance(v, str):
-                    translation.append(self.search_translation(lang, v))
+                    translation.append(await self.search_translation(lang, v))
                     continue
                         
                 url += f"&text={value}"
@@ -42,4 +42,3 @@ class ClientSession(aiohttp.ClientSession):
         
         await asyncio.sleep(1.5)
         return value
-    
