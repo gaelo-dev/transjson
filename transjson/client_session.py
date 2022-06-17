@@ -24,6 +24,6 @@ class ClientSession(aiohttp.ClientSession):
         if isinstance(value, str):
             async with self.post(f"/v2/translate?auth_key={env.auth_key}&text={value}&target_lang={lang}") as resp:
                 json = await resp.json()
-                return json["text"]
+                return json["translations"][0]["text"]
             
         return value
