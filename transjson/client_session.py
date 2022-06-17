@@ -37,7 +37,8 @@ class ClientSession(aiohttp.ClientSession):
             return translation
         
         if isinstance(value, str):
-            return await self.search_translation(lang, [value])[0]
+            translation = await self.search_translation(lang, [value])
+            return translation[0]
         
         await asyncio.sleep(1.5)
         return value
