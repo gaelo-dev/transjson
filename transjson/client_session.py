@@ -12,7 +12,7 @@ class ClientSession(aiohttp.ClientSession):
             translation = {}
             keys = [k for k in value.keys()]
             values = await self.search_translation(lang, [v for v in value.values()])
-            
+
             for n, k in enumerate(keys):
                 translation[k] = values[n]
             
@@ -31,14 +31,13 @@ class ClientSession(aiohttp.ClientSession):
             async with self.post(url) as resp:
                 print(f"translating -> {lang}")
                 json = await resp.json()
-                for k, v in json["translations"]:
-                    if k == "text":
-                        translation.append(v)
+                for i in json["translations"]:
+                    translation.append(i["text"])
             
             return translation
         
         if isinstance(value, str):
-            await self.search_translation(lang, [value])
+            return await self.search_translation(lang, [value])[0]
         
         await asyncio.sleep(1.5)
         return value
