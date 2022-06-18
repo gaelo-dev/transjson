@@ -26,7 +26,7 @@ class ClientSession(aiohttp.ClientSession):
                     translation.append(await self.search_translation(lang, v))
                     continue
                         
-                url += f"&text={value}"
+                url += f"&text={v}"
 
             async with self.post(url) as resp:
                 print(f"translating -> {lang}")
