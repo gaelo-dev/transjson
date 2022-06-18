@@ -20,6 +20,7 @@ class ClientSession(aiohttp.ClientSession):
         
         if isinstance(value, list):
             translation = []
+            text = False
             url = f"/v2/translate?auth_key={env.auth_key}&target_lang={lang}"
             for v in value:
                 if not isinstance(v, str):
@@ -27,12 +28,14 @@ class ClientSession(aiohttp.ClientSession):
                     continue
                         
                 url += f"&text={v}"
+                text = True
 
-            async with self.post(url) as resp:
-                print(f"translating -> {lang}")
-                json = await resp.json()
-                for i in json["translations"]:
-                    translation.append(i["text"])
+            if text:
+                async with self.post(url) as resp:
+                    print(f"translating -> {lang}")
+                    json = await resp.json()
+                    for i in json["translations"]:
+                        translation.append(i["text"])
             
             return translation
         
