@@ -1,34 +1,41 @@
-from client_session import ClientSession
-import asyncio
-import argparse
+import threading
+import click
+import parser
 import json
 
 
-def args_parse():    
-    parser = argparse.ArgumentParser(description="file to be translated")
-    parser.add_argument("file")
-    parser.add_argument("languages", default=["en"], type=lambda s: s.split(","), nargs=argparse.OPTIONAL)
-    parser.add_argument("directory", default="", nargs=argparse.OPTIONAL)
+class Translate(threading.Thread):
+    def __init__(self, auth_key, lang, obj, dir) -> None:
+        super().__init__(daemon=False)
+        self.auth_key = auth_key
+        self.lang = lang
+        self.obj = obj
+        self.dir = dir
+        
+        self.start()
     
-    return parser.parse_args()
+    def run(self) -> None:
+        with open(f"{self.dir}/{self.lang}.json", "w") as f:
+            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.obj)))
 
 
-async def main():
-    args = args_parse()
-
-    with open(args.file, "r") as f:
-        translation_base: dict = json.loads(f.read())
+@click.command
+@click.argument("filename", type=click.Path(exists=True, dir_okay=False))
+@click.option("-k", "--key", envvar="AUTH_KEY")
+@click.option("-l", "--lang", multiple=True, default=["es"])
+@click.option("-d", "--directory", default=".", type=click.Path(file_okay=False))
+def transjson(filename, key, lang, directory):
+    if key is None:
+        raise Exception("Missing auth key")
+        
+    with open(filename, "r") as f:
+        base = json.load(f)
     
-    async with ClientSession() as session:
-        for lang in args.languages:
-            translation = {}
-            for key, value in translation_base.items():
-                translation[key] = await session.search_translation(lang, value)
-            
-            with open(f"{args.directory}/{lang}.json", "w") as f:
-                f.write(json.dumps(translation, indent=4))
-            
-            await asyncio.sleep(2.5)
+    print(lang)
+    threads = []
+    for l in lang:
+        threads.append(Translate(key, l, base, directory))
 
-                
-asyncio.run(main())
+
+if "__main__" == __name__:
+    transjson()
