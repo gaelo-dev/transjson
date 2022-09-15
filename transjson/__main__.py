@@ -16,7 +16,7 @@ class Translate(threading.Thread):
     
     def run(self) -> None:
         with open(f"{self.dir}/{self.lang}.json", "w") as f:
-            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.obj)))
+            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.obj), indent=4))
 
 
 @click.command
