@@ -1,5 +1,4 @@
 import requests
-import json
 import time
 
 def _translate_list_of_text(auth_key: str, lang: str, texts: list[str]) -> list[str]:
