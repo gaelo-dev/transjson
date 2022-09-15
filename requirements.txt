@@ -1,2 +1,2 @@
 python-dotenv==0.17.1
-aiohttp
+click==8.1.3
