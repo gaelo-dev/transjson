@@ -29,11 +29,11 @@ def _parse_dict(auth_key: str, lang: str, value: dict):
 def _parse_list(auth_key: str, lang: str, value: list):
     result = []
     t1, t2 = [], []
-    for i in range(0, len(value)):
-        if not isinstance(value[i], str):
+    for i, val in enumerate(value):
+        if not isinstance(val, str):
             t2.append(i)
             
-        t1.append(value[i])
+        t1.append(val)
         
     values = [t1[i:i+50] for i in range(0, len(t1), 50)]
     for v in values:
