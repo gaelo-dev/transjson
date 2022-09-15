@@ -44,13 +44,15 @@ def _parse_list(auth_key: str, lang: str, value: list):
         
     return result
 
-def parse(auth_key: str, lang: str, obj): 
-    if isinstance(obj, dict):
-        result = _parse_dict(auth_key, lang, obj)    
-    elif isinstance(obj, list):
-        result = _parse_list(auth_key, lang, obj)
-    elif isinstance(obj, str):
-        result = _translate_list_of_text(auth_key, lang, [obj])[0]
+def parse(auth_key: str, lang: str, value): 
+    if isinstance(value, dict):
+        result = _parse_dict(auth_key, lang, value)    
+    elif isinstance(value, list):
+        result = _parse_list(auth_key, lang, value)
+    elif isinstance(value, str):
+        result = _translate_list_of_text(auth_key, lang, [value])[0]
+    else:
+        result = value
 
     time.sleep(1.0)
     return result

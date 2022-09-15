@@ -6,18 +6,18 @@ import json
 
 
 class Translate(threading.Thread):
-    def __init__(self, auth_key, lang, obj, dir) -> None:
+    def __init__(self, auth_key, lang, value, dir) -> None:
         super().__init__(daemon=False)
         self.auth_key = auth_key
         self.lang = lang
-        self.obj = obj
+        self.value = value
         self.dir = dir
         
         self.start()
     
     def run(self) -> None:
         with open(f"{self.dir}/{self.lang}.json", "w") as f:
-            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.obj), indent=4))
+            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.value), indent=4))
 
 
 @click.command
