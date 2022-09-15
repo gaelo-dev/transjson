@@ -1,4 +1,5 @@
 import threading
+import dotenv
 import click
 import parser
 import json
@@ -38,4 +39,5 @@ def transjson(filename, key, lang, directory):
 
 
 if "__main__" == __name__:
+    dotenv.load_dotenv()
     transjson()
