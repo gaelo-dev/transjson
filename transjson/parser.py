@@ -40,7 +40,7 @@ def _parse_list(auth_key: str, lang: str, value: list):
         result.extend(_translate_list_of_text(auth_key, lang, v))
         
     for i in t2:
-        result.insert(i, parse(value[i]))
+        result.insert(i, parse(auth_key, lang, value[i]))
         
     return result
 
