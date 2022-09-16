@@ -31,7 +31,6 @@ def transjson(filename, key, lang, directory):
     with open(filename, "r") as f:
         base = json.load(f)
     
-    print(lang)
     threads = []
     for l in lang:
         threads.append(Translate(key, l, base, directory))

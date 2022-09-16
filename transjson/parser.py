@@ -41,7 +41,7 @@ class Parser:
         for text in texts:
             url = url._replace(query=f"{url.query}&" + parse.urlencode({"text": text}))
             
-        req = requests.get(url)
+        req = requests.get(url.geturl())
         content = req.json()
         return [
             translation["text"] 
