@@ -16,7 +16,6 @@ class Parser:
         url = parse.urlparse("https://api-free.deepl.com/v2/translate")
         url = url._replace(query=parse.urlencode({"auth_key": self.auth_key, "target_lang": self.lang}))
 
-        print(url)
         for text in texts:
             url = url._replace(query=f"{url.query}&" + parse.urlencode({"text": text}))
             
