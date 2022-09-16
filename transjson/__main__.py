@@ -1,7 +1,7 @@
+from parser import Parser
 import threading
 import dotenv
 import click
-import parser
 import json
 
 
@@ -12,12 +12,11 @@ class Translate(threading.Thread):
         self.lang = lang
         self.value = value
         self.dir = dir
-        
         self.start()
     
     def run(self) -> None:
         with open(f"{self.dir}/{self.lang}.json", "w") as f:
-            f.write(json.dumps(parser.parse(self.auth_key, self.lang, self.value), indent=4))
+            f.write(json.dumps(Parser(self.auth_key, self.lang, self.value).parse(), indent=4))
 
 
 @click.command
