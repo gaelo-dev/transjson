@@ -2,22 +2,6 @@ from urllib import parse
 import requests
 import time
 
-def _translate_list_of_text(auth_key: str, lang: str, texts: list[str]) -> list[str]:
-    if len(texts) > 50:
-        raise Exception
-    
-    url = parse.urlparse("https://api-free.deepl.com/v2/translate?auth_key=aaa")
-    url._replace()
-    url = parse.urljoin("https://api-free.deepl.com/v2/translate", parse.urlencode({"auth_key": auth_key, "target_lang": lang}))
-    for text in texts:
-        url = parse.urljoin(url, parse.urlencode({"text": text}))
-    
-    req = requests.get(parse.urlparse(url).geturl())
-    content = req.json()
-    return [
-        translation["text"] 
-        for translation in content["translations"]
-    ]
         
 class Parser:
     def __init__(self, auth_key: str, lang: str, value) -> None:
