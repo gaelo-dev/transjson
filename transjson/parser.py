@@ -12,18 +12,14 @@ class Parser:
     def ___translate_list(self, texts: list[str]) -> list[str]:
         if len(texts) > 50:
             raise Exception
-        
-        url = parse.urlparse(parse.urljoin(
-            "https://api-free.deepl.com/v2/translate?", 
-            parse.urlencode({
-                "auth_key": self.auth_key, 
-                "target_lang": self.lang
-            })
-        ))
-        
+
+        url = parse.urlparse("https://api-free.deepl.com/v2/translate")
+        url = url._replace(query=parse.urlencode({"auth_key": self.auth_key, "target_lang": self.lang}))
+
         for text in texts:
             url = url._replace(query=f"{url.query}&" + parse.urlencode({"text": text}))
             
+        # print(url)
         req = requests.get(url.geturl())
         content = req.json()
         return [
@@ -34,8 +30,8 @@ class Parser:
     def __dict(self, value: dict) -> dict:
         result = {}
         keys = list(value.keys())
-        values: list = Parser(self.auth_key, self.lang, list(value.values)).parse()
-        
+        values: list = Parser(self.auth_key, self.lang, list(value.values())).parse()
+
         for num, key in enumerate(keys):
             result[key] = values[num]
         
@@ -52,9 +48,10 @@ class Parser:
             
             
         values = [t1[i:i+50] for i in range(0, len(t1), 50)]
+
         for v in values:
             result.extend(self.___translate_list(v))
-            
+        
         for i in t2:
             result.insert(i, Parser(self.auth_key, self.lang, value[i]).parse())
         
