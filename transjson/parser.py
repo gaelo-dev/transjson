@@ -1,8 +1,11 @@
 from urllib import parse
 import requests
 import time
+import re
 
-        
+cache = {}
+cache_count = 1
+
 class Parser:
     def __init__(self, auth_key: str, lang: str, value) -> None:
         self.auth_key = auth_key
@@ -17,13 +20,13 @@ class Parser:
         url = url._replace(query=parse.urlencode({"auth_key": self.auth_key, "target_lang": self.lang}))
 
         for text in texts:
+            text = self.__parse_and_cache(text)
             url = url._replace(query=f"{url.query}&" + parse.urlencode({"text": text}))
             
-        # print(url)
         req = requests.get(url.geturl())
         content = req.json()
         return [
-            translation["text"] 
+            self.__unparse_from_cache(translation["text"])
             for translation in content["translations"]
         ]
     
@@ -56,6 +59,28 @@ class Parser:
             result.insert(i, Parser(self.auth_key, self.lang, value[i]).parse())
         
         return result
+    
+    def __parse_and_cache(self, text: str):
+        global cache_count
+        global cache
+        matchs = re.findall(r'(\{[^}]*\})', text)
+        for match in matchs:
+            if match not in cache:
+                cache[match] = "{=" + str(cache_count) + "=}"
+                cache_count += 1
+        for k, v in cache.items():
+            text = text.replace(k, v)
+        return text
+
+    def __unparse_from_cache(self, text: str):
+        global cache
+        print(cache)
+        for k, v in cache.items():
+            print(k, v, "**", text)
+            text = text.replace(v, k)
+            print("**", text)
+        return text
+
     
     def parse(self):
         if isinstance(self.value, dict):
