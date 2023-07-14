@@ -24,7 +24,7 @@ class Cache:
             self.lock.release()
             
     def set(self, match: Any) -> None:
-        self._cache[match] = "{=" + str(self.count) + "=}"
+        self._cache[match] = "{:=" + str(self.count) + ":=}"
         self.count += 1
         
     def items(self) -> ItemsView[Any, str]:
@@ -59,7 +59,7 @@ class Parser:
     def __dict(self, value: dict) -> dict:
         result = {}
         keys = list(value.keys())
-        values: list = Parser(self.auth_key, self.lang, list(value.values())).parse()
+        values: list = Parser(self.cache, self.auth_key, self.lang, list(value.values())).parse()
 
         for num, key in enumerate(keys):
             result[key] = values[num]
@@ -82,7 +82,7 @@ class Parser:
             result.extend(self.___translate_list(v))
         
         for i in t2:
-            result.insert(i, Parser(self.auth_key, self.lang, value[i]).parse())
+            result.insert(i, Parser(self.cache, self.auth_key, self.lang, value[i]).parse())
         
         return result
     

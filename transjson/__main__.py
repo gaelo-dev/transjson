@@ -1,4 +1,4 @@
-from .parser import Parser, Cache
+from parse import Parser, Cache
 import threading
 import dotenv
 import click
