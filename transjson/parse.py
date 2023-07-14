@@ -101,7 +101,6 @@ class Parser:
     def __unparse_from_cache(self, text: str):
         with self.cache as c:
             for k, v in c.items():
-                print(k, v, "**", text)
                 text = text.replace(v, k)
                 print("**", text)
         
