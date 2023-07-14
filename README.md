@@ -23,7 +23,7 @@ AUTH_KEY="your_token"
 
 ### Arguments
 ```
-file [languages] [directory]
+file -l [languages] -d [directory]
 ```
 
 + **file** -> file to translate
@@ -32,5 +32,5 @@ file [languages] [directory]
 
 ### Example use
 ```
-python transjson test.json "es, ja" ..\translations\
+python transjson test.json -l "es, ja" -d ..\translations\
 ```

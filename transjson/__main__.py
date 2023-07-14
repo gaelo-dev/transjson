@@ -1,4 +1,4 @@
-from parser import Parser
+from parse import Parser, Cache
 import threading
 import dotenv
 import click
@@ -6,8 +6,9 @@ import json
 
 
 class Translate(threading.Thread):
-    def __init__(self, auth_key, lang, value, dir) -> None:
+    def __init__(self, cache, auth_key, lang, value, dir) -> None:
         super().__init__(daemon=False)
+        self.cache = cache
         self.auth_key = auth_key
         self.lang = lang
         self.value = value
@@ -16,7 +17,7 @@ class Translate(threading.Thread):
     
     def run(self) -> None:
         with open(f"{self.dir}/{self.lang}.json", "w") as f:
-            f.write(json.dumps(Parser(self.auth_key, self.lang, self.value).parse(), ensure_ascii=False, indent=4))
+            f.write(json.dumps(Parser(self.cache, self.auth_key, self.lang, self.value).parse(), ensure_ascii=False, indent=4))
 
 
 @click.command
@@ -31,9 +32,10 @@ def transjson(filename, key, lang, directory):
     with open(filename, "r") as f:
         base = json.load(f)
     
+    cache = Cache()
     threads = []
     for l in lang:
-        threads.append(Translate(key, l, base, directory))
+        threads.append(Translate(cache, key, l, base, directory))
 
 
 if "__main__" == __name__:

@@ -1,10 +1,63 @@
 {
-    "key1": {
-        "key2": {
-            "key3": {
-                "key4": "hi"
-            }
+    "github": {
+        "write_username": "Please write an username.",
+        "name": "🧑 Name:",
+        "account": " Account Type:",
+        "organization": "🏢 Organization:",
+        "link": "☁️ Link",
+        "location": "🗺 Location:",
+        "email": "📩 Email",
+        "biography": "📃 Biography",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Public Repositories",
+        "followers": "🧍 Followers",
+        "analizing": "Analizando cuenta, por favor espera...",
+        "unknow": "El usuario no se encontró"
+    },
+    "help": {
+        "presentation": "<a:pin:893553168259121172> Hello, I am Node an all-in-one, multifunctional bot with innovative commands.",
+        "how_use": "How do I see the commands?",
+        "how_use_answer": "Easy, you just have to write",
+        "need_support": "If I need support, how can I contact with the support team",
+        "need_support_answer": "You can ask in our [support server!]({inviteURL})",
+        "how_vote": "How can I vote for the bot?",
+        "how_vote_answer": "u can do it using the command <a:arrowright:970388686816550912> `/vote` or [Clicking Here](https://vote.nodebot.xyz) 'We are waiting your vote :)'",
+        "title": "✨ - Help menu"
+    },
+    "avatar": "here you have the avatar of {user}",
+    "ping": {
+        "global": "Global ping",
+        "internal": "Internal Processing (database + processing)"
+    },
+    "ban": {
+    },
+    "skip": {
+        "messages": {
+            "0": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
+            "1": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
+            "2": "What are you doing that you don't listen to music? Add a song now :)"
         },
-        "extra_key": "bye"
-    }
+        "skiped": "{song} has been skipped"
+    },
+    "queue": {
+        "queue": "{name}'s queue"
+    },
+    "247": {
+        "enabled": "24/7 mode is enabled <a:DJPeepo:969757766744944700>"
+    },
+    "play": {
+        "added": "{song} added to the list"
+    },
+    "reboot": {
+        "shard": "Rebooting shard {shard}..."
+    },
+    "stop": {
+        "resumed": "Music resumed by {user}",
+        "paused": "Music paused by {user}"
+    },
+    "voice_update": {
+        "leaving": "Leaving {channel} in {time} minutes",
+        "alone": "I was alone, and I left {channel}"
+    },
+    "GENERICERROR": "Oops, there seems to have been an error.\nYou can contact the developer to let him know at [The Official Discord]({inviteURL})"
 }
