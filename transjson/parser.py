@@ -1,13 +1,39 @@
 from urllib import parse
+from threading import Lock
+from typing import Self, Any, ItemsView, Iterator
 import requests
 import time
 import re
 
-cache = {}
-cache_count = 1
+
+class Cache:
+    def __init__(self) -> None:
+        self.lock = Lock()
+        self._cache = {}
+        self.count = 1
+
+    def __iter__(self) -> Iterator:
+        return self._cache.__iter__()
+
+    def __enter__(self) -> Self:
+        self.lock.acquire()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        if self.lock.locked:
+            self.lock.release()
+            
+    def set(self, match: Any) -> None:
+        self._cache[match] = "{=" + str(self.count) + "=}"
+        self.count += 1
+        
+    def items(self) -> ItemsView[Any, str]:
+        return self._cache.items()
+
 
 class Parser:
-    def __init__(self, auth_key: str, lang: str, value) -> None:
+    def __init__(self, cache: Cache, auth_key: str, lang: str, value) -> None:
+        self.cache = cache
         self.auth_key = auth_key
         self.lang = lang
         self.value = value
@@ -61,24 +87,24 @@ class Parser:
         return result
     
     def __parse_and_cache(self, text: str):
-        global cache_count
-        global cache
-        matchs = re.findall(r'(\{[^}]*\})', text)
-        for match in matchs:
-            if match not in cache:
-                cache[match] = "{=" + str(cache_count) + "=}"
-                cache_count += 1
-        for k, v in cache.items():
-            text = text.replace(k, v)
+        with self.cache as c:
+            matchs = re.findall(r'(\{[^}]*\})', text)
+            for match in matchs:
+                if match not in c:
+                    c.set(match)
+            
+            for k, v in c.items():
+                text = text.replace(k, v)
+        
         return text
 
     def __unparse_from_cache(self, text: str):
-        global cache
-        print(cache)
-        for k, v in cache.items():
-            print(k, v, "**", text)
-            text = text.replace(v, k)
-            print("**", text)
+        with self.cache as c:
+            for k, v in c.items():
+                print(k, v, "**", text)
+                text = text.replace(v, k)
+                print("**", text)
+        
         return text
 
     
