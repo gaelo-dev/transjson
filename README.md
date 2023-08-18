@@ -12,7 +12,7 @@ pip install -r requirements.txt
 ### Environment variables
 add an .env file and set the authentication token, like here:
 ```
-AUTH_KEY="your_token"
+DEEPL_KEY="your_token"
 ```
 
 ### Other environment variables

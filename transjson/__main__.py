@@ -22,7 +22,7 @@ class Translate(threading.Thread):
 
 @click.command
 @click.argument("filename", type=click.Path(exists=True, dir_okay=False))
-@click.option("-k", "--key", envvar="AUTH_KEY")
+@click.option("-k", "--key", envvar="DEEPL_KEY")
 @click.option("-l", "--lang", multiple=True, default=["es"])
 @click.option("-d", "--directory", default=".", type=click.Path(file_okay=False))
 def transjson(filename, key, lang, directory):
